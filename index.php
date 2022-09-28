@@ -1,205 +1,128 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exercise for practice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <style>
+        body {
+            font-family:"arial", verdana Helvetica, sans-serif;
+        }
+        .h-bg{
+            background: #D0D0D0;
+            height: 180px;
+        }
+        .header{
+           padding-top: 50px;
+        }
+        .header p {
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 6px;
+            color: #FFFAF0;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            text-shadow: 7px -12px 4px rgba(18, 17, 17, 0.42);
+            font-size: 29px;
+        }
 
-if (isset($_POST['send'])) {   // Проверка сто кнопка отправить была нажата
+        .main-bg {
+            background: #F5F5F5 ;
+            padding: 50px 0;
+        }
+        .main-wrp{
+            background: #f9f9f9;
+            box-shadow: 0 0 10px rgba(19, 18, 18, 0.3);
+            margin: 25px auto 0;
+            padding: 21px;
+            position: relative;
+            width: 95%;
+        }
+        .card {
+            margin: 10px;
+        }
+        .product-grids {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            height: 100%;
+        }
 
-    $text = isset($_POST['text']) ? $_POST['text'] : '';   // что бы тут что-то было, если нечего нет то прейдёт пустота
-    $lenText = strlen($text);
-    if (!$lenText || $lenText < 1 || $lenText > 500) {  // Проверка, что было хотя бы от 1 до 500 симболов
-        exit('Text must be more 1 to 500 symbols');
-    }
-    $chr_ru = "А-Яа-яЁё0-9\s`~!@#$%^&*()_+-={}|:;<>?,.\/\"\'\\\[\]"; // рурские символы
-    if (!preg_match("/^[$chr_ru]+$/u", $text)) {    // Проверяет что только были русские символы
-        exit('Only Russian symbols');
-    }
-    $sbl = [" ", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "-", "=", "{", "}", "|", ":", ";",
-        "<", ">", "?", ",", ".", "\/", "\"", "\'", "\\", "\[", "\]"];  // символы для удаление
+        .link {
+            display: block;
+            margin-top: 15px;
+            padding: 21px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<!-- нав -->
+<div class="h-bg">
+    <div class="container">
+        <div class="header">
+            <p>Exercise for practice</p>
+        </div>
+    </div>
+</div>
+<div class="main-bg">
+    <div class="container">
+        <div class="main-wrp">
+            <div class="artists">
+                <div class="product-grids">
+                    <!-- карточки -->
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://picsum.photos/150?random=1" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Cyrillic to Latin</h5>
+                            <p class="card-text">On old phones there were no Cyrillic characters, to write a message you had to write in Latin characters. This translator will help you quickly write a message in Latin. </p>
+                            <a href="/transcriptor_ru/transcriptor.php" class="btn btn-primary">Go to project</a>
+                        </div>
+                    </div>
 
-    $text = filter_var($text, FILTER_SANITIZE_FULL_SPECIAL_CHARS);  // убирает запрещенные символы
-    $text = str_replace($sbl, "NN", "$text");  // заменяет символы на знак
-}
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://picsum.photos/150?random=2" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Shadow generator</h5>
+                            <p class="card-text">jQuery practice. Simple css shadow generator</p>
+                            <a href="/shadow_generator/start.php" class="btn btn-primary">Go to project</a>
+                        </div>
+                    </div>
 
-function translate ($str) {  // словарь (замена на английские символы)
-    $simbl = [
-        'NN'=> ' ',
-        'а'=> 'a',
-        'б'=> 'b',
-        'в'=> 'v',
-        'г'=> 'g',
-        'д'=> 'd',
-        'е'=> 'e',
-        'ё'=> 'yo',
-        'ж'=> 'zh',
-        'з'=> 'z',
-        'и'=> 'i',
-        'й'=> 'j',
-        'к'=> 'k',
-        'л'=> 'l',
-        'м'=> 'm',
-        'н'=> 'n',
-        'о'=> 'o',
-        'п'=> 'p',
-        'р'=> 'r',
-        'с'=> 's',
-        'т'=> 't',
-        'у'=> 'y',
-        'ф'=> 'f',
-        'х'=> 'x',
-        'ц'=> 'ts',
-        'ч'=> 'ch',
-        'ш'=> 'sh',
-        'щ'=> 'w',
-        'ъ'=> '',
-        'ы'=> 'u',
-        'ь'=> '',
-        'э'=> 'e',
-        'ю'=> 'ju',
-        'я'=> 'ya',
-        'А'=> 'A',
-        'Б'=> 'B',
-        'В'=> 'v',
-        'Г'=> 'g',
-        'Д'=> 'D',
-        'Е'=> 'E',
-        'Ё'=> 'Yo',
-        'Ж'=> 'Zh',
-        'З'=> 'Z',
-        'И'=> 'I',
-        'Й'=> 'J',
-        'К'=> 'K',
-        'Л'=> 'L',
-        'М'=> 'M',
-        'Н'=> 'N',
-        'О'=> 'O',
-        'П'=> 'P',
-        'Р'=> 'R',
-        'С'=> 'S',
-        'Т'=> 'T',
-        'У'=> 'Y',
-        'Ф'=> 'F',
-        'Х'=> 'X',
-        'Ц'=> 'Ts',
-        'Ч'=> 'Ch',
-        'Ш'=> 'Sh',
-        'Щ'=> 'W',
-        'Ъ'=> '',
-        'Ы'=> 'U',
-        'Ь'=> '',
-        'Э'=> 'E',
-        'Ю'=> 'Ju',
-        'Я'=> 'Ya'
-    ];
-    $word = '';
-    $arr = str_split($str, 2);  // строку превращаем в массив, русские символ имеет 2 байта (2 инглиш символа)
-    foreach ($arr as $value ) {  // идет перебор и заменяет на английские символы
-        $letter = $simbl[$value];
-        $word .= $letter;  //  добавляет символ к символу
-    }
-    return $word;
-}
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://picsum.photos/150?random=3" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Practice in OOP: 'Little game'</h5>
+                            <p class="card-text">A small board game, each player takes turns and rolls a dice, moving a figure into cells</p>
+                            <a href="/oop_board_game/oop_board_game.php" class="btn btn-primary">Go to project</a>
+                        </div>
+                    </div>
 
-$rest = translate($text);  // запуск функции
+                    <div class="card" style="width: 18rem;">
+                        <img src="https://picsum.photos/150?random=4" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Test Task №1</h5>
+                            <p class="card-text">Small test task</p>
+                            <a href="/test_task_1/start.php" class="btn btn-primary">Go to project</a>
+                        </div>
+                    </div>
 
-?>
-
-<!DOCTYPE html>
-<html lang="ru" xmlns="http://www.w3.org/1999/html">     <!-- язык контента -->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">            <!-- Что бы работал для броузера IE  -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- для мобильной версии размер -->
-        <title>Translator</title>
-        <style>
-            body {                       /* вставляем картинку для фона */
-                background: url("https://clipart-db.ru/file_content/rastr/background_019.jpg") center center no-repeat;
-                background-size: unset;
-            }
-
-            .wrap {
-                max-width: 1000px;        /* Не дает шире стать */
-                min-width: 320px;        /* Для ползунка прокрутки */
-                margin: 200px auto;          /* Центрирование */
-            }
-
-            .wrap .translate {           /* выравнивание */
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .wrap .translate .post {          /* блок для правильного отображение */
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                background: #00FFFF;
-                height: auto;
-                width: 320px;
-            }
-
-            .wrap .post form {              /* выравнивание */
-                display: flex;
-                flex-direction: column;
-            }
-
-            .wrap .post form label {         /* стили для метки */
-                display: block;
-                background-color: #7FFFD4;
-                margin: 3px;
-            }
-
-            .wrap .post form .text {           /* стили для поле вода текста */
-                display: block;
-                width: 300px;
-                margin: 7px;
-            }
-
-            .wrap .post form input {
-                display: block;
-            }
-
-            .wrap .post span {                /* стили для вывода текста */
-                display: block;
-                background-color: #E0FFFF;
-                margin: 50px;
-                padding: 5px;
-                border: 3px solid black;
-                font-size: 1.5rem;
-                white-space: pre-wrap;
-            }
-
-        </style>
-    </head>
-    <body>
-        <div class="wrap">
-            <div class="translate">
-                <div class="post">
-                    <form action="/" method="post" >
-                        <label> текст для перевода в транслит
-                            <textarea class="text" name="text" id="text" placeholder="ведите текст для перевода в транслит"></textarea>
-                        </label>
-                        <input type="submit" value="Отправить" name="send">
-                    </form>
-                    <span><?php echo $rest; ?></span>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+
+
+<div class="footer">
+    <div class="container">
+        <p class="link"><span>© 2022  PHP Developer Karpunin P. All rights Reserved | <a href="https://github.com/KarpuninP/"> My github</a></span></p>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
